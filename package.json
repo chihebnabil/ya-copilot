@@ -1,29 +1,29 @@
 {
-    "name": "awesome-vscode-extension-boilerplate",
-    "displayName": "Awesome VSCode Extension Boilerplate",
+    "name": "ya-copilot",
+    "displayName": "Ya Copilot",
     "version": "0.0.29",
-    "description": "An awesome vscode extension boilerplate",
+    "description": "YA Copilot is an open source copilot alternative",
     "publisher": "YuTengjing",
     "private": true,
     "preview": true,
     "author": {
-        "name": "YuTengjing",
-        "email": "ytj2713151713@gmail.com",
-        "url": "https://github.com/tjx666"
+        "name": "Chiheb Nabil",
+        "email": "chiheb.design@gmail.com",
+        "url": "https://github.com/chihebnabil/"
     },
     "license": "SEE LICENSE IN LICENSE",
-    "homepage": "https://github.com/tjx666/awesome-vscode-extension-boilerplate/blob/master/README.md",
+    "homepage": "https://github.com/chihebnabil/ya-copilot/blob/master/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/tjx666/awesome-vscode-extension-boilerplate"
+        "url": "https://github.com/chihebnabil/ya-copilot"
     },
     "bugs": {
-        "url": "https://github.com/tjx666/awesome-vscode-extension-boilerplate/issues",
-        "email": "ytj2713151713@gmail.com"
+        "url": "https://github.com/chihebnabil/ya-copilot/issues",
+        "email": "chiheb.design@gmail.com"
     },
     "keywords": [
-        "boilerplate",
-        "template"
+        "\"copilot\"",
+        "\"ai\""
     ],
     "categories": [
         "Other"
@@ -38,7 +38,7 @@
         {
             "url": "https://img.shields.io/badge/PRs-welcome-brightgreen.svg",
             "description": "PRs Welcome",
-            "href": "https://github.com/tjx666/awesome-vscode-extension-boilerplate/fork"
+            "href": "https://github.com/chihebnabil/ya-copilot/fork"
         }
     ],
     "activationEvents": [],
