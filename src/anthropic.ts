@@ -12,8 +12,8 @@ export const createCompletion = async (prompt: string) => {
     const response = await client.messages.create({
         messages: [{ role: 'user', content: prompt }],
         system: 'You are a seasoned software engineer',
-        max_tokens: 1024,
-        model: 'claude-3-5-sonnet-20240620',
+        max_tokens: config.get('maxTokens'),
+        model: config.get('model'),
     });
     return response;
 };
