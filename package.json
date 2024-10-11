@@ -41,14 +41,54 @@
             "href": "https://github.com/chihebnabil/ya-copilot/fork"
         }
     ],
-    "activationEvents": [],
+    "activationEvents": [
+        "onView:chatboxView"
+    ],
     "contributes": {
         "commands": [
             {
-                "command": "awesome-vscode-extension-boilerplate.helloWorld",
-                "title": "Hello World"
+                "command": "ya-copilot.setApiKey",
+                "title": "Set Anthropic API Key"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "YA Copilot",
+            "properties": {
+                "ya-copilot.apikey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Your Copilot API key"
+                },
+                "ya-copilot.edgeCases": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include the edge cases in the responce"
+                },
+                "ya-copilot.deepExplanation": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include the deep explanation in the responce for the complex parts"
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "chatbox-sidebar",
+                    "title": "YA Copilot",
+                    "icon": "$(comment)"
+                }
+            ]
+        },
+        "views": {
+            "chatbox-sidebar": [
+                {
+                    "type": "webview",
+                    "id": "chatboxView",
+                    "name": "Chatbox"
+                }
+            ]
+        }
     },
     "eslintConfig": {
         "extends": "@yutengjing/eslint-config-typescript",
@@ -106,5 +146,8 @@
         "stale-dep": "^0.7.0",
         "tsx": "^4.19.0",
         "typescript": "~5.5.4"
+    },
+    "dependencies": {
+        "@anthropic-ai/sdk": "^0.29.0"
     }
 }

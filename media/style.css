@@ -1,0 +1,92 @@
+:root {
+    --container-padding: 10px;
+    --input-padding-vertical: 6px;
+    --input-padding-horizontal: 4px;
+    --input-margin-vertical: 4px;
+    --input-margin-horizontal: 0;
+}
+
+body {
+    padding: 0 var(--container-padding);
+    color: var(--vscode-foreground);
+    font-size: var(--vscode-font-size);
+    font-weight: var(--vscode-font-weight);
+    font-family: var(--vscode-font-family);
+    background-color: var(--vscode-editor-background);
+}
+
+#chat-messages {
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    max-width: 100%;
+}
+
+.message.user {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.message.assistant {
+    background-color: var(--vscode-editor-inactiveSelectionBackground);
+    color: var(--vscode-editor-foreground);
+}
+
+.message-content {
+    word-wrap: break-word;
+}
+
+#input-container {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+}
+
+#message-input {
+    height: 40px;
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+    border-radius: 5px;
+    outline: 1px solid var(--vscode-input-border);
+    color: var(--vscode-input-foreground);
+    background-color: var(--vscode-input-background);
+    caret-color: var(--vscode-input-foreground);
+    font-size: var(--vscode-input-font-size);
+    line-height: var(--vscode-input-line-height);
+}
+
+#loader {
+    display: none;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--vscode-button-background);
+    border-top: 3px solid var(--vscode-editor-background);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+.message.error {
+    background-color: var(--vscode-inputValidation-errorBackground);
+    color: var(--vscode-inputValidation-errorForeground);
+    border: 1px solid var(--vscode-inputValidation-errorBorder);
+}
