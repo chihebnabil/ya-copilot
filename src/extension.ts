@@ -72,6 +72,15 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
                 snippet: selectedText,
             });
 
+            const config = vscode.workspace.getConfiguration('ya-copilot');
+            const debug = config.get('debug');
+            if (debug) {
+                this._sendMessage({
+                    type: 'userMessage',
+                    value: `<pre>${tree}</pre>`,
+                });
+            }
+
             const res = await createCompletion(prompt);
             if (res.content[0].type === 'text') {
                 this._sendMessage({ type: 'assistantMessage', value: res.content[0].text });

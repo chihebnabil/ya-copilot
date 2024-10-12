@@ -103,6 +103,11 @@
                         "build"
                     ],
                     "description": "Patterns to ignore when generating the file tree for the prompt in order to avoid having a really long input prompt"
+                },
+                "ya-copilot.debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable debug mode"
                 }
             }
         },
