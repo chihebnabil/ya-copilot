@@ -73,7 +73,11 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             });
 
             const res = await createCompletion(prompt);
-            this._sendMessage({ type: 'assistantMessage', value: res.content[0].text });
+            if (res.content[0].type === 'text') {
+                this._sendMessage({ type: 'assistantMessage', value: res.content[0].text });
+            } else {
+                this._sendMessage({ type: 'error', value: 'Unexpected response format' });
+            }
         } catch (error: any) {
             this._sendMessage({ type: 'error', value: `Error: ${error.message}` });
         }

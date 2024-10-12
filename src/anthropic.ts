@@ -2,7 +2,11 @@ import Anthropic from '@anthropic-ai/sdk';
 import * as vscode from 'vscode';
 
 const config = vscode.workspace.getConfiguration('ya-copilot');
-const apiKey = config.get('apikey');
+const apiKey = config.get('apikey') as string | undefined;
+
+if (!apiKey) {
+    throw new Error('API key is not set');
+}
 
 export const client = new Anthropic({
     apiKey, // This is the default and can be omitted
@@ -12,8 +16,8 @@ export const createCompletion = async (prompt: string) => {
     const response = await client.messages.create({
         messages: [{ role: 'user', content: prompt }],
         system: 'You are a seasoned software engineer',
-        max_tokens: config.get('maxTokens'),
-        model: config.get('model'),
+        max_tokens: config.get('maxTokens') as number,
+        model: config.get('model') as string,
     });
     return response;
 };
