@@ -1,7 +1,7 @@
 {
     "name": "ya-copilot",
     "displayName": "Ya Copilot",
-    "version": "0.0.30",
+    "version": "0.0.3",
     "description": "YA Copilot is an open source copilot alternative",
     "publisher": "YuTengjing",
     "private": true,
