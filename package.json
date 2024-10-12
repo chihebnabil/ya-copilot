@@ -1,7 +1,7 @@
 {
     "name": "ya-copilot",
     "displayName": "Ya Copilot",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "description": "YA Copilot is an open source copilot alternative",
     "publisher": "remoteskills",
     "private": true,
@@ -188,6 +188,7 @@
         "typescript": "~5.5.4"
     },
     "dependencies": {
-        "@anthropic-ai/sdk": "^0.29.0"
+        "@anthropic-ai/sdk": "^0.29.0",
+        "ignore": "^6.0.2"
     }
 }

@@ -49,11 +49,11 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             }
 
             const rootUri = workspaceFolders[0].uri;
+
             const fileNameRelativePath = editor.document.uri.fsPath.replace(rootUri.fsPath, '');
             const selection = editor.selection;
             const selectedText = editor.document.getText(selection);
-
-            const tree = await readFilesTreeAsASCII(rootUri);
+            const tree = await readFilesTreeAsASCII(rootUri.fsPath);
 
             const prompt = formatPrompt({
                 userPrompt: data.value,
