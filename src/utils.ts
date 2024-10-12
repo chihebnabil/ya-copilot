@@ -68,3 +68,15 @@ export async function readFilesTreeAsASCII(
 
     return output.join('\n');
 }
+
+// New function to get the root folder
+export function getRootFolder(): vscode.Uri | undefined {
+    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+        // If there's a workspace folder, use it
+        return vscode.workspace.workspaceFolders[0].uri;
+    } else if (vscode.window.activeTextEditor) {
+        // If there's an active text editor, use its file's parent folder
+        return vscode.Uri.joinPath(vscode.window.activeTextEditor.document.uri, '..');
+    }
+    return undefined;
+}
