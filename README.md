@@ -1,15 +1,8 @@
 # YA Copilot VSCode Extension
 
-## Setup
+YA Copilot is an open source copilot alternative, it is a VSCode extension that uses the Anthropic Copilot API to provide AI assistance.
 
-After fork this repository and clone it to local, run:
-
-```bash
-cd <your-extension-directory>
-npx setup-boilerplate
-```
-
-You can also just skip this step and adjust the boilerplate by yourself.
+Start by setting your anthropic API key in the extension settings
 
 ## Development
 
