@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import * as path from 'path';
 
 import * as vscode from 'vscode';
 
@@ -12,9 +13,6 @@ function getIgnorePatternsFromSettings(): string[] {
     ]);
 }
 
-/**
- * Function to parse gitignore contents into an array of patterns
- */
 async function parseGitignore(rootUri: vscode.Uri): Promise<string[]> {
     const gitignoreUri = vscode.Uri.joinPath(rootUri, '.gitignore');
     try {
@@ -23,22 +21,19 @@ async function parseGitignore(rootUri: vscode.Uri): Promise<string[]> {
             .toString()
             .split('\n')
             .map((line) => line.trim())
-            .filter((line) => line && !line.startsWith('#')); // Exclude comments and empty lines
+            .filter((line) => line && !line.startsWith('#'));
         return gitignorePatterns;
     } catch {
         return [];
     }
 }
 
-/**
- * Convert a gitignore pattern to a regular expression
- */
 function gitignoreToRegExp(pattern: string): RegExp {
     let regexPattern = pattern
-        .replaceAll(/[.+^${}()|[\]\\]/g, String.raw`\$&`) // Escape special regex characters
-        .replaceAll('*', '.*') // Convert * to .*
-        .replaceAll('?', '.') // Convert ? to .
-        .replaceAll('[!', '[^'); // Convert [! to [^
+        .replaceAll(/[.+^${}()|[\]\\]/g, String.raw`\$&`)
+        .replaceAll('*', '.*')
+        .replaceAll('?', '.')
+        .replaceAll('[!', '[^');
 
     if (!pattern.startsWith('/')) {
         regexPattern = `(^|/)${regexPattern}`;
@@ -50,15 +45,13 @@ function gitignoreToRegExp(pattern: string): RegExp {
     return new RegExp(regexPattern);
 }
 
-/**
- * Check if a given name matches any ignore patterns
- */
-function isIgnored(name: string, ignorePatterns: string[]): boolean {
+function isIgnored(filePath: string, rootPath: string, ignorePatterns: string[]): boolean {
+    const relativePath = path.relative(rootPath, filePath);
     return ignorePatterns.some((pattern) => {
         try {
-            return gitignoreToRegExp(pattern).test(name);
+            const regex = gitignoreToRegExp(pattern);
+            return regex.test(relativePath) || regex.test(`/${relativePath}`);
         } catch {
-            // If the pattern is invalid, skip it
             return false;
         }
     });
@@ -67,10 +60,13 @@ function isIgnored(name: string, ignorePatterns: string[]): boolean {
 export async function readFilesTreeAsASCII(
     rootUri: vscode.Uri,
     prefix: string = '',
+    ignorePatterns: string[] = [],
 ): Promise<string> {
-    let ignorePatterns = await parseGitignore(rootUri);
     if (ignorePatterns.length === 0) {
-        ignorePatterns = getIgnorePatternsFromSettings();
+        ignorePatterns = await parseGitignore(rootUri);
+        if (ignorePatterns.length === 0) {
+            ignorePatterns = getIgnorePatternsFromSettings();
+        }
     }
 
     const entries = await vscode.workspace.fs.readDirectory(rootUri);
@@ -82,52 +78,29 @@ export async function readFilesTreeAsASCII(
         const isLast = i === entries.length - 1;
         const newPrefix = prefix + (isLast ? '└── ' : '├── ');
         const childPrefix = prefix + (isLast ? '    ' : '│   ');
+        const fullPath = vscode.Uri.joinPath(rootUri, name).fsPath;
 
-        // Skip ignored files or directories
-        if (isIgnored(name, ignorePatterns)) continue;
+        if (isIgnored(fullPath, rootUri.fsPath, ignorePatterns)) continue;
 
         if (type === vscode.FileType.Directory) {
             output.push(newPrefix + name);
             const childUri = vscode.Uri.joinPath(rootUri, name);
-            // Collect promises instead of awaiting here
-            promises.push(readFilesTreeAsASCII(childUri, childPrefix));
+            promises.push(readFilesTreeAsASCII(childUri, childPrefix, ignorePatterns));
         } else {
             output.push(newPrefix + name);
         }
     }
 
-    // Resolve all promises at once
     const resolved = await Promise.all(promises);
     output.push(...resolved);
 
     return output.join('\n');
 }
 
-// Function to get the root folder URI
 export function getRootFolderUri(): vscode.Uri | undefined {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (workspaceFolders && workspaceFolders.length > 0) {
         return workspaceFolders[0].uri;
     }
     return undefined;
-}
-
-// Main function to generate and display the ASCII tree
-export async function generateAndDisplayASCIITree() {
-    const rootUri = getRootFolderUri();
-    if (!rootUri) {
-        vscode.window.showErrorMessage('No workspace folder is open');
-        return;
-    }
-
-    try {
-        const asciiTree = await readFilesTreeAsASCII(rootUri);
-        const document = await vscode.workspace.openTextDocument({
-            content: asciiTree,
-            language: 'plaintext',
-        });
-        await vscode.window.showTextDocument(document);
-    } catch (error) {
-        vscode.window.showErrorMessage(`Error generating ASCII tree: ${error}`);
-    }
 }
