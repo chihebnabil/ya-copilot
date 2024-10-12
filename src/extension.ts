@@ -34,7 +34,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
         });
     }
 
-    private async _handleSendMessage(data) {
+    private async _handleSendMessage(data: { value: any }) {
         try {
             const editor = vscode.window.activeTextEditor;
             if (!editor) {
@@ -74,7 +74,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
 
             const res = await createCompletion(prompt);
             this._sendMessage({ type: 'assistantMessage', value: res.content[0].text });
-        } catch (error) {
+        } catch (error: any) {
             this._sendMessage({ type: 'error', value: `Error: ${error.message}` });
         }
     }
@@ -99,7 +99,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link href="${styleUri}" rel="stylesheet">
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css" rel="stylesheet">
             <title>Chatbox</title>
         </head>
         <body>

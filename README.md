@@ -46,16 +46,3 @@ You need set two github actions secrets:
 ```shell
 pnpm release
 ```
-
-## My extensions
-
-- [Open in External App](https://github.com/tjx666/open-in-external-app)
-- [VSCode archive](https://github.com/tjx666/vscode-archive)
-- [Neo File Utils](https://github.com/tjx666/vscode-neo-file-utils)
-- [VSCode FE Helper](https://github.com/tjx666/vscode-fe-helper)
-- [Modify File Warning](https://github.com/tjx666/modify-file-warning)
-- [Power Edit](https://github.com/tjx666/power-edit)
-- [Adobe Extension Development Tools](https://github.com/tjx666/vscode-adobe-extension-devtools)
-- [Scripting Listener](https://github.com/tjx666/scripting-listener)
-
-Check all here: [publishers/YuTengjing](https://marketplace.visualstudio.com/publishers/YuTengjing)
