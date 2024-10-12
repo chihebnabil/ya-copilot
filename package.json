@@ -1,8 +1,8 @@
 {
     "name": "ya-copilot",
     "displayName": "Ya Copilot",
-    "version": "0.0.18",
-    "description": "YA Copilot is an open source copilot alternative",
+    "version": "0.0.19",
+    "description": "YA Copilot (Yet Another Copilot) is an open source copilot alternative",
     "publisher": "remoteskills",
     "private": true,
     "preview": true,
@@ -102,7 +102,7 @@
                         ".vscode",
                         "build"
                     ],
-                    "description": "Patterns to ignore when generating the file tree for the prompt in order to avoid having a really long input prompt"
+                    "description": "Patterns to ignore when generating the file tree for the prompt in order to avoid having a really long input prompt, if .gitignore was not available"
                 },
                 "ya-copilot.debug": {
                     "type": "boolean",
