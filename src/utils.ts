@@ -35,18 +35,17 @@ function gitignoreToRegExp(pattern: string): RegExp {
         .replaceAll('?', '.')
         .replaceAll('[!', '[^');
 
-    if (!pattern.startsWith('/')) {
-        regexPattern = `(^|/)${regexPattern}`;
-    }
-    if (!pattern.endsWith('/')) {
-        regexPattern = `${regexPattern}($|/)`;
+    if (pattern.endsWith('/')) {
+        regexPattern += '.*';
+    } else if (!pattern.includes('/')) {
+        regexPattern = `(^|/)${regexPattern}($|/)`;
     }
 
     return new RegExp(regexPattern);
 }
 
 function isIgnored(filePath: string, rootPath: string, ignorePatterns: string[]): boolean {
-    const relativePath = path.relative(rootPath, filePath);
+    const relativePath = path.relative(rootPath, filePath).replaceAll('\\', '/');
     return ignorePatterns.some((pattern) => {
         try {
             const regex = gitignoreToRegExp(pattern);
@@ -92,7 +91,7 @@ export async function readFilesTreeAsASCII(
     }
 
     const resolved = await Promise.all(promises);
-    output.push(...resolved);
+    output.push(...resolved.filter((s) => s.trim() !== ''));
 
     return output.join('\n');
 }
