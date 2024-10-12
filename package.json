@@ -57,7 +57,7 @@
                 "ya-copilot.apikey": {
                     "type": "string",
                     "default": "",
-                    "description": "Your Copilot API key"
+                    "description": "Your Anthropic API key"
                 },
                 "ya-copilot.model": {
                     "type": "string",
