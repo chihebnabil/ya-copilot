@@ -3,17 +3,7 @@ import * as path from 'path';
 
 import * as vscode from 'vscode';
 
-function getIgnorePatternsFromSettings(): string[] {
-    const config = vscode.workspace.getConfiguration('ya-copilot');
-    return config.get<string[]>('commonIgnoredFolders', [
-        'node_modules',
-        'dist',
-        '.git',
-        '.DS_Store',
-    ]);
-}
-
-async function parseGitignore(rootUri: vscode.Uri): Promise<string[]> {
+async function parseGitignore(rootUri: vscode.Uri): Promise<string[] | null> {
     const gitignoreUri = vscode.Uri.joinPath(rootUri, '.gitignore');
     try {
         const gitignoreContent = await vscode.workspace.fs.readFile(gitignoreUri);
@@ -22,10 +12,20 @@ async function parseGitignore(rootUri: vscode.Uri): Promise<string[]> {
             .split('\n')
             .map((line) => line.trim())
             .filter((line) => line && !line.startsWith('#'));
-        return gitignorePatterns;
+        return gitignorePatterns.length > 0 ? gitignorePatterns : null;
     } catch {
-        return [];
+        return null;
     }
+}
+
+function getCommonIgnoredFolders(): string[] {
+    const config = vscode.workspace.getConfiguration('ya-copilot');
+    return config.get<string[]>('commonIgnoredFolders', [
+        'node_modules',
+        'dist',
+        '.git',
+        '.DS_Store',
+    ]);
 }
 
 function gitignoreToRegExp(pattern: string): RegExp {
@@ -59,12 +59,12 @@ function isIgnored(filePath: string, rootPath: string, ignorePatterns: string[])
 export async function readFilesTreeAsASCII(
     rootUri: vscode.Uri,
     prefix: string = '',
-    ignorePatterns: string[] = [],
+    ignorePatterns: string[] | null = null,
 ): Promise<string> {
-    if (ignorePatterns.length === 0) {
+    if (ignorePatterns === null) {
         ignorePatterns = await parseGitignore(rootUri);
-        if (ignorePatterns.length === 0) {
-            ignorePatterns = getIgnorePatternsFromSettings();
+        if (ignorePatterns === null) {
+            ignorePatterns = getCommonIgnoredFolders();
         }
     }
 
