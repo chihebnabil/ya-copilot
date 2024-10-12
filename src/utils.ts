@@ -2,8 +2,15 @@ import { Buffer } from 'buffer';
 
 import * as vscode from 'vscode';
 
-// Default common ignore patterns
-const commonIgnorePatterns = ['node_modules', 'dist', '.git', '.DS_Store'];
+function getIgnorePatternsFromSettings(): string[] {
+    const config = vscode.workspace.getConfiguration('ya-copilot');
+    return config.get<string[]>('commonIgnoredFolders', [
+        'node_modules',
+        'dist',
+        '.git',
+        '.DS_Store',
+    ]);
+}
 
 /**
  * Function to parse gitignore contents into an array of patterns
@@ -63,7 +70,7 @@ export async function readFilesTreeAsASCII(
 ): Promise<string> {
     let ignorePatterns = await parseGitignore(rootUri);
     if (ignorePatterns.length === 0) {
-        ignorePatterns = commonIgnorePatterns;
+        ignorePatterns = getIgnorePatternsFromSettings();
     }
 
     const entries = await vscode.workspace.fs.readDirectory(rootUri);

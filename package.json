@@ -88,6 +88,21 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Include the deep explanation in the responce for the complex parts"
+                },
+                "ya-copilot.commonIgnoredFolders": {
+                    "type": "array",
+                    "default": [
+                        ".git",
+                        ".github",
+                        "node_modules",
+                        "out",
+                        "dist",
+                        "vendor",
+                        ".vscode-test",
+                        ".vscode",
+                        "build"
+                    ],
+                    "description": "Patterns to ignore when generating the file tree for the prompt in order to avoid having a really long input prompt"
                 }
             }
         },
