@@ -77,7 +77,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             if (debug) {
                 this._sendMessage({
                     type: 'userMessage',
-                    value: `<pre>${tree}</pre>`,
+                    value: `<pre>${prompt}</pre>`,
                 });
             }
 
