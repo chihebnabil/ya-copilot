@@ -54,9 +54,11 @@ body {
 
 #message-input {
     height: 40px;
-    width: 100%;
+    width: calc(100% - 20px);
+    min-height: auto;
     padding: 0 10px;
     border: none;
+    font-family: var(--vscode-font-family);
     border-radius: 5px;
     outline: 1px solid var(--vscode-input-border);
     color: var(--vscode-input-foreground);

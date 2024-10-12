@@ -110,7 +110,8 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             <div id="chat-messages"></div>
             <div id="loader"></div>
             <div id="input-container">
-                <input type="text" id="message-input" placeholder="Type a message...">
+                <textarea id="message-input" 
+                placeholder="Chat with your codebase!"></textarea>
             </div>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/marked-highlight/2.0.1/index.umd.min.js"></script>
