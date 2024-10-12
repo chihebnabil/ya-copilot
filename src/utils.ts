@@ -5,8 +5,13 @@ import ignore from 'ignore';
 import * as vscode from 'vscode';
 
 function getIgnorePatternsFromSettings(): string[] {
-    const config = vscode.workspace.getConfiguration('fileTreeReader');
-    return config.get<string[]>('ignorePatterns', ['node_modules', 'dist', '.git', '.DS_Store']);
+    const config = vscode.workspace.getConfiguration('ya-copilot');
+    return config.get<string[]>('commonIgnoredFolders', [
+        'node_modules',
+        'dist',
+        '.git',
+        '.DS_Store',
+    ]);
 }
 
 export function readFilesTreeAsASCII(dir: string, prefix: string = ''): string {

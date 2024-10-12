@@ -1,7 +1,7 @@
 {
     "name": "ya-copilot",
     "displayName": "Ya Copilot",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "description": "YA Copilot is an open source copilot alternative",
     "publisher": "remoteskills",
     "private": true,
