@@ -1,7 +1,7 @@
 {
     "name": "ya-copilot",
     "displayName": "Ya Copilot",
-    "version": "0.0.24",
+    "version": "0.0.25",
     "description": "YA Copilot (Yet Another Copilot) is an open source copilot alternative",
     "publisher": "remoteskills",
     "private": true,
@@ -22,8 +22,8 @@
         "email": "chiheb.design@gmail.com"
     },
     "keywords": [
-        "\"copilot\"",
-        "\"ai\""
+        "copilot",
+        "ai"
     ],
     "categories": [
         "Other"
@@ -189,6 +189,7 @@
     },
     "dependencies": {
         "@anthropic-ai/sdk": "^0.29.0",
-        "ignore": "^6.0.2"
+        "ignore": "^6.0.2",
+        "lowdb": "^7.0.1"
     }
 }
