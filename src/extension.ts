@@ -7,7 +7,7 @@ import { readFilesTreeAsASCII } from './utils';
 class ChatboxViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'chatboxView';
     private _view?: vscode.WebviewView;
-    private _dbManager: DatabaseManager;
+    public _dbManager: DatabaseManager;
 
     constructor(private readonly _extensionUri: vscode.Uri) {
         this._dbManager = new DatabaseManager();
