@@ -1,7 +1,7 @@
 {
     "name": "ya-copilot",
     "displayName": "Ya Copilot",
-    "version": "0.0.25",
+    "version": "0.0.26",
     "description": "YA Copilot (Yet Another Copilot) is an open source copilot alternative",
     "publisher": "remoteskills",
     "private": true,
