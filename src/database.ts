@@ -35,8 +35,6 @@ export class DatabaseManager {
             fs.mkdirSync(globalDir, { recursive: true });
         }
 
-        console.log('DatabaseManager constructor', this.globalDbPath);
-
         this.file = new JSONFile<Data>(this.globalDbPath); // Create a new JSONFile instance
         this.db = new Low<Data>(this.file, { chats: [] }); // Create a new Low instance with the JSONFile
         console.log('DatabaseManager initialized', this.db);

@@ -9,7 +9,7 @@ if (!apiKey) {
 }
 
 export const client = new Anthropic({
-    apiKey, // This is the default and can be omitted
+    apiKey,
 });
 
 export const createCompletion = async (prompt: string) => {

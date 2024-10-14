@@ -4,6 +4,10 @@ YA Copilot (Yet Another Copilot) is an open source copilot alternative, it is a 
 
 Start by setting your anthropic API key in the extension settings
 
+## Commands
+
+- `ya-copilot.setApiKey`: Set your Anthropic API key
+
 ## Extension Settings
 
 This extension contributes the following settings:
