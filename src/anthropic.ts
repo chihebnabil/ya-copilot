@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import * as vscode from 'vscode';
+import { PromptParams } from './types';
 
 const config = vscode.workspace.getConfiguration('ya-copilot');
 const apiKey = config.get('apikey') as string | undefined;
@@ -21,16 +22,6 @@ export const createCompletion = async (prompt: string) => {
     });
     return response;
 };
-
-interface PromptParams {
-    userPrompt: string;
-    projectTree: string;
-    currentFileName: string;
-    snippet: string;
-    language?: string;
-    dependencies?: string[];
-    context?: string;
-}
 
 export function formatPrompt({
     userPrompt,

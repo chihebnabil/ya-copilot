@@ -5,16 +5,7 @@ import * as path from 'path';
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 
-interface Chat {
-    id: number;
-    message: string;
-    timestamp: string;
-    isAssistant: boolean;
-}
-
-interface Data {
-    chats: Chat[];
-}
+import { Chat , Data } from './types'
 
 export class DatabaseManager {
     /** Define db as Low<Data> type */

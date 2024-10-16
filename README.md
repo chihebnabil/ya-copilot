@@ -4,11 +4,12 @@ YA Copilot (Yet Another Copilot) is an open source copilot alternative, it is a 
 
 Start by setting your anthropic API key in the extension settings
 
-## Commands
+## Commands ( CTRL + SHIFT + P )
 
 - `ya-copilot.setApiKey`: Set your Anthropic API key
+- `ya-copilot.clearMessages`: Clear the chatbox
 
-## Extension Settings
+## Extension Settings ( CTRL + COMMA )
 
 This extension contributes the following settings:
 
