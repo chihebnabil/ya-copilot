@@ -106,35 +106,26 @@ body {
     background-color: var(--vscode-inputValidation-errorBackground);
     color: var(--vscode-inputValidation-errorForeground);
     border: 1px solid var(--vscode-inputValidation-errorBorder);
-    border-radius: var(--border-radius);
 }
 
-#chat-controls {
-    margin-bottom: 8px;
-    text-align: center;
+.copy-btn {
+    background-color: var(--vscode-button-background); /* Button background color */
+    color: var(--vscode-button-foreground); /* Button text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 6px 12px; /* Padding for the button */
+    font-size: var(--vscode-font-size); /* Match font size */
+    font-family: var(--vscode-font-family); /* Match font family */
+    cursor: pointer; /* Change cursor on hover */
+    margin-top: 5px; /* Space above the button */
+    transition: background-color 0.3s ease, transform 0.2s; /* Smooth transitions */
 }
 
-#clear-chat {
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
-    border: none;
-    padding: 4px 8px;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    transition: background-color var(--transition-speed), transform var(--transition-speed);
+/* Hover and active states */
+.copy-btn:hover {
+    background-color: var(--vscode-button-hoverBackground); /* Change background on hover */
 }
 
-#clear-chat:hover {
-    background-color: var(--vscode-button-hoverBackground);
-    transform: translateY(-1px);
-}
-
-
-#chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: var(--vscode-editor-background);
-    border-bottom: 1px solid var(--vscode-panel-border);
+.copy-btn:active {
+    transform: scale(0.95); /* Slightly shrink button on click */
 }

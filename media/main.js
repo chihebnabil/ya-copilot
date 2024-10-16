@@ -4,7 +4,7 @@
     const messageInput = document.getElementById('message-input');
     const loader = document.getElementById('loader');
 
-    // Initialize marked with highlight.js
+    // Initialize marked with highlight.js and the CopyButtonPlugin
     marked.use(
         markedHighlight.markedHighlight({
             langPrefix: 'hljs language-',
@@ -14,6 +14,33 @@
             },
         }),
     );
+
+    // Initialize highlight.js with the CopyButtonPlugin
+    hljs.registerLanguage('plaintext', (hljs) => ({
+        // your language configuration
+    }));
+
+    // Function to add a copy button to highlighted code snippets
+    function addCopyButton(codeElement) {
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.innerText = 'Copy';
+        
+        button.addEventListener('click', () => {
+            const codeText = codeElement.innerText;
+            navigator.clipboard.writeText(codeText)
+                .then(() => {
+                    alert('Code copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy code!');
+                });
+        });
+
+        // Append the copy button after the code element
+        codeElement.parentNode.insertBefore(button, codeElement.nextSibling);
+    }
 
     messageInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
@@ -35,14 +62,14 @@
     function addMessage(sender, content, snippet) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender);
-        let messageContent = '';
-        if (content && content.length) {
-            messageContent += marked.parse(content);
+        
+        let messageContent = marked.parse(content);
+        if (snippet) {
+            messageContent += `
+                <pre><code>${hljs.highlightAuto(snippet).value}</code></pre>
+            `;
         }
 
-        if (snippet) {
-            messageContent += `<pre><code>${hljs.highlightAuto(snippet).value}</code></pre>`;
-        }
         messageElement.innerHTML = `
             <div class="message-content">
                 ${messageContent}
@@ -50,6 +77,10 @@
         `;
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Find all code elements and add a copy button
+        const codeElements = messageElement.querySelectorAll('pre code');
+        codeElements.forEach(addCopyButton);
     }
 
     function showLoader() {
@@ -98,5 +129,4 @@
                 break;
         }
     });
-    vscode.postMessage({ type: 'getMessages' });
 })();

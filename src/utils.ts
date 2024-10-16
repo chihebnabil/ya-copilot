@@ -6,12 +6,7 @@ import * as vscode from 'vscode';
 
 function getIgnorePatternsFromSettings(): string[] {
     const config = vscode.workspace.getConfiguration('ya-copilot');
-    return config.get<string[]>('commonIgnoredFolders', [
-        'node_modules',
-        'dist',
-        '.git',
-        '.DS_Store',
-    ]);
+    return config.get<string[]>('commonIgnoredFolders', ['node_modules', 'dist', '.git']);
 }
 
 export function readFilesTreeAsASCII(dir: string, prefix: string = ''): string {
