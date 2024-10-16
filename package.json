@@ -42,15 +42,28 @@
         }
     ],
     "activationEvents": [
-        "onView:chatboxView"
     ],
     "contributes": {
         "commands": [
             {
                 "command": "ya-copilot.setApiKey",
                 "title": "Set Anthropic API Key"
+            },
+            {
+                "command": "ya-copilot.clearMessages",
+                "title": "Clear Chat Messages",
+                "icon": "$(clear-all)"
             }
         ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "ya-copilot.clearMessages",
+                    "when": "view == chatboxView",
+                    "group": "navigation"
+                }
+            ]
+        },
         "configuration": {
             "title": "YA Copilot",
             "properties": {

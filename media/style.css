@@ -1,9 +1,11 @@
 :root {
-    --container-padding: 10px;
-    --input-padding-vertical: 6px;
-    --input-padding-horizontal: 4px;
+    --container-padding: 5px;
+    --input-padding-vertical: 4px;
+    --input-padding-horizontal: 6px;
     --input-margin-vertical: 4px;
     --input-margin-horizontal: 0;
+    --border-radius: 4px;
+    --transition-speed: 0.2s ease;
 }
 
 body {
@@ -13,27 +15,34 @@ body {
     font-weight: var(--vscode-font-weight);
     font-family: var(--vscode-font-family);
     background-color: var(--vscode-editor-background);
+    line-height: 1.5;
 }
 
 #chat-messages {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 90px);
     overflow-y: auto;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 5px;
+    border-radius: var(--border-radius);
+    background-color: var(--vscode-editor-background);
+    border: 1px solid var(--vscode-editor-hoverBackground);
 }
 
 .message {
-    margin-bottom: 15px;
-    padding: 5px;
-    border-radius: 5px;
-    max-width: 100%;
+    margin-bottom: 5px;
+    padding: 6px;
+    border-radius: var(--border-radius);
+    max-width: 90%;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+    display: flex;
+    flex-direction: column;
 }
 
 .message.user {
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
+    color: white;
     align-self: flex-end;
     margin-left: auto;
+    background-color: #3c3c3c;
 }
 
 .message.assistant {
@@ -48,34 +57,40 @@ body {
 #input-container {
     position: fixed;
     bottom: 10px;
-    left: 10px;
-    right: 10px;
+    left: 5px;
+    right: 5px;
+    background-color: var(--vscode-editor-background);
+    padding: 6px;
+    border-radius: var(--border-radius);
 }
 
 #message-input {
-    height: 40px;
-    width: calc(100% - 20px);
-    min-height: auto;
-    padding: 0 10px;
-    border: none;
-    font-family: var(--vscode-font-family);
-    border-radius: 5px;
-    outline: 1px solid var(--vscode-input-border);
+    height: 32px;
+    width: calc(100% - 10px);
+    padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+    border: 1px solid var(--vscode-input-border);
+    border-radius: var(--border-radius);
+    outline: none;
     color: var(--vscode-input-foreground);
     background-color: var(--vscode-input-background);
     caret-color: var(--vscode-input-foreground);
     font-size: var(--vscode-input-font-size);
-    line-height: var(--vscode-input-line-height);
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+#message-input:focus {
+    border-color: var(--vscode-inputOption-activeBorder);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
 #loader {
     display: none;
     position: fixed;
-    bottom: 60px;
+    bottom: 50%;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border: 3px solid var(--vscode-button-background);
     border-top: 3px solid var(--vscode-editor-background);
     border-radius: 50%;
@@ -91,4 +106,35 @@ body {
     background-color: var(--vscode-inputValidation-errorBackground);
     color: var(--vscode-inputValidation-errorForeground);
     border: 1px solid var(--vscode-inputValidation-errorBorder);
+    border-radius: var(--border-radius);
+}
+
+#chat-controls {
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+#clear-chat {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+#clear-chat:hover {
+    background-color: var(--vscode-button-hoverBackground);
+    transform: translateY(-1px);
+}
+
+
+#chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--vscode-editor-background);
+    border-bottom: 1px solid var(--vscode-panel-border);
 }

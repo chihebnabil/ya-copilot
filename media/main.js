@@ -16,7 +16,8 @@
     );
 
     messageInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
             sendMessage();
         }
     });
@@ -27,15 +28,20 @@
             vscode.postMessage({ type: 'sendMessage', value: message });
             messageInput.value = '';
             showLoader();
+            // Remove this line: addMessage('user', message);
         }
     }
 
     function addMessage(sender, content, snippet) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', sender);
-        let messageContent = marked.parse(content);
+        let messageContent = '';
+        if (content && content.length) {
+            messageContent += marked.parse(content);
+        }
+
         if (snippet) {
-            //messageContent += `<pre><code>${hljs.highlightAuto(snippet).value}</code></pre>`;
+            messageContent += `<pre><code>${hljs.highlightAuto(snippet).value}</code></pre>`;
         }
         messageElement.innerHTML = `
             <div class="message-content">
@@ -54,11 +60,27 @@
         loader.style.display = 'none';
     }
 
+    function clearMessages() {
+        chatMessages.innerHTML = '';
+    }
+
+    function loadMessages(messages) {
+        clearMessages();
+        messages.forEach((message) => {
+            addMessage(
+                message.type === 'userMessage' ? 'user' : 'assistant',
+                message.value,
+                message.snippet,
+            );
+        });
+    }
+
     window.addEventListener('message', (event) => {
         const message = event.data;
         switch (message.type) {
             case 'userMessage':
-                addMessage('user', message.value, message.snippet);
+                addMessage('user', message.value, null);
+                addMessage('user', '', message.snippet);
                 break;
             case 'assistantMessage':
                 hideLoader();
@@ -68,6 +90,13 @@
                 hideLoader();
                 addMessage('error', message.value);
                 break;
+            case 'clearMessages':
+                clearMessages();
+                break;
+            case 'loadMessages':
+                loadMessages(message.messages);
+                break;
         }
     });
+    vscode.postMessage({ type: 'getMessages' });
 })();

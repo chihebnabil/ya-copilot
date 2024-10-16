@@ -1,15 +1,23 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 
-import { formatPrompt , createCompletion} from './anthropic';
+import { formatPrompt, createCompletion } from './anthropic';
 import { readFilesTreeAsASCII } from './utils';
 
 class ChatboxViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'chatboxView';
     private _view?: vscode.WebviewView;
+    private _messages: Array<{ type: string; value: string; snippet?: string }> = [];
+    private _storageUri: vscode.Uri;
 
-    constructor(private readonly _extensionUri: vscode.Uri) {}
-
-    // allow unused args
+    constructor(
+        private readonly _extensionUri: vscode.Uri,
+        private readonly _context: vscode.ExtensionContext,
+    ) {
+        this._storageUri = vscode.Uri.joinPath(this._context.globalStorageUri, 'messages.json');
+        this._loadMessages();
+    }
 
     public resolveWebviewView(
         webviewView: vscode.WebviewView,
@@ -24,6 +32,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
         };
 
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
             switch (data.type) {
@@ -82,18 +91,51 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             }
 
             const res = await createCompletion(prompt);
-             if (res.content[0].type === 'text') {
-             this._sendMessage({ type: 'assistantMessage', value: res.content[0].text });
-             } else {
-             this._sendMessage({ type: 'error', value: 'Unexpected response format' });
-             }
+            if (res.content[0].type === 'text') {
+                this._sendMessage({ type: 'assistantMessage', value: res.content[0].text });
+            } else {
+                this._sendMessage({ type: 'error', value: 'Unexpected response format' });
+            }
         } catch (error: any) {
             this._sendMessage({ type: 'error', value: `Error: ${error.message}` });
         }
     }
 
+    private _loadMessages() {
+        try {
+            if (fs.existsSync(this._storageUri.fsPath)) {
+                const data = fs.readFileSync(this._storageUri.fsPath, 'utf8');
+                this._messages = JSON.parse(data);
+            }
+        } catch (error) {
+            console.error('Error loading messages:', error);
+        }
+    }
+
+    private _saveMessages() {
+        try {
+            const dirPath = path.dirname(this._storageUri.fsPath);
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+            fs.writeFileSync(this._storageUri.fsPath, JSON.stringify(this._messages), 'utf8');
+        } catch (error) {
+            console.error('Error saving messages:', error);
+        }
+    }
+
+    public clearMessages() {
+        this._messages = [];
+        this._saveMessages();
+        if (this._view) {
+            this._view.webview.postMessage({ type: 'clearMessages' });
+        }
+    }
+
     private _sendMessage(message: { type: string; value: string; snippet?: string }) {
         if (this._view) {
+            this._messages.push(message);
+            this._saveMessages();
             this._view.webview.postMessage(message);
         }
     }
@@ -119,8 +161,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
             <div id="chat-messages"></div>
             <div id="loader"></div>
             <div id="input-container">
-                <textarea id="message-input" 
-                placeholder="Chat with your codebase!"></textarea>
+                <textarea id="message-input" placeholder="Chat with your codebase!"></textarea>
             </div>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/marked-highlight/2.0.1/index.umd.min.js"></script>
@@ -132,7 +173,7 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-    const provider = new ChatboxViewProvider(context.extensionUri);
+    const provider = new ChatboxViewProvider(context.extensionUri, context);
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ya-copilot.setApiKey', async () => {
@@ -151,6 +192,12 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider(ChatboxViewProvider.viewType, provider),
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ya-copilot.clearMessages', () => {
+            provider.clearMessages();
+        }),
     );
 
     console.log('Chatbox extension is now active!');

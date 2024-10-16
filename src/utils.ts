@@ -25,7 +25,7 @@ export function readFilesTreeAsASCII(dir: string, prefix: string = ''): string {
     } catch (error) {
         // If .gitignore is not found, use ignore patterns from settings
         ig.add(getIgnorePatternsFromSettings());
-        console.log('No .gitignore file found, using ignore patterns from settings', error);
+        // No need to log the error, just use the patterns from settings silently
     }
 
     const files = fs.readdirSync(dir);
