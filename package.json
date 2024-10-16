@@ -41,8 +41,7 @@
             "href": "https://github.com/chihebnabil/ya-copilot/fork"
         }
     ],
-    "activationEvents": [
-    ],
+    "activationEvents": [],
     "contributes": {
         "commands": [
             {
@@ -53,6 +52,10 @@
                 "command": "ya-copilot.clearMessages",
                 "title": "Clear Chat Messages",
                 "icon": "$(clear-all)"
+            },
+            {
+                "command": "ya-copilot.generateDocumentation",
+                "title": "Generate Documentation"
             }
         ],
         "menus": {
@@ -141,7 +144,15 @@
                     "name": "Chatbox"
                 }
             ]
-        }
+        },
+        "keybindings": [
+            {
+                "command": "ya-copilot.generateDocumentation",
+                "key": "ctrl+alt+d",
+                "mac": "cmd+alt+d",
+                "when": "editorTextFocus"
+            }
+        ]
     },
     "eslintConfig": {
         "extends": "@yutengjing/eslint-config-typescript",

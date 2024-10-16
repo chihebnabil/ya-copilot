@@ -2,9 +2,10 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { createCompletion, formatPrompt } from './anthropic';
+import { createCompletion, formatPrompt, createDocumentationCompletion } from './anthropic';
 import { DatabaseManager } from './database';
 import { readFilesTreeAsASCII } from './utils';
+import { DocumentationGenerator } from './DocumentationGenerator';
 
 class ChatboxViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'chatboxView';
@@ -13,10 +14,13 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
     private _storageUri: vscode.Uri;
     private _messages: Array<{ type: string; value: string; snippet?: string }> = [];
 
-    constructor(private readonly _extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
+    constructor(
+        private readonly _extensionUri: vscode.Uri,
+        context: vscode.ExtensionContext,
+    ) {
         this._dbManager = new DatabaseManager();
         this._dbManager.init();
-        this._storageUri = context.globalStorageUri;  // Add this line
+        this._storageUri = context.globalStorageUri; // Add this line
     }
 
     public async resolveWebviewView(
@@ -215,6 +219,12 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('ya-copilot.clearMessages', () => {
             provider.clearMessages();
+        }),
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ya-copilot.generateDocumentation', () => {
+            DocumentationGenerator.generateDocumentation();
         }),
     );
 

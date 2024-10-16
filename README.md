@@ -8,6 +8,7 @@ Start by setting your anthropic API key in the extension settings
 
 - `ya-copilot.setApiKey`: Set your Anthropic API key
 - `ya-copilot.clearMessages`: Clear the chatbox
+- `ya-copilot.generateDocumentation`: Generate documentation for the selected code snippet
 
 ## Extension Settings ( CTRL + COMMA )
 

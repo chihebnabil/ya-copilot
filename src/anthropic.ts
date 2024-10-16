@@ -23,6 +23,36 @@ export const createCompletion = async (prompt: string) => {
     return response;
 };
 
+export const createDocumentationCompletion = async (code: string, language: string) => {
+    const response = await client.messages.create({
+        messages: [
+            {
+                role: 'user',
+                content: `Generate only the documentation like (PHPDoc , jsDoc ...) for the following ${language} snippet : \n\n${code}`,
+            },
+            {
+                role: 'assistant',
+                content: `Here's the snippet documentation:`,
+            },
+        ],
+        system: 'You are a seasoned software engineer. Provide documentation without using markdown code block indicators.',
+        max_tokens: config.get('maxTokens') as number,
+        model: config.get('model') as string,
+    });
+    
+    if (response.content[0].type === 'text') {
+        // Remove any remaining markdown code block indicators
+        const cleanedText = response.content[0].text.replace(/```[\w]*\n?/g, '').trim();
+        console.log(cleanedText);
+        return {
+            ...response,
+            content: [{ ...response.content[0], text: cleanedText }]
+        };
+    }
+    
+    return response;
+};
+
 export function formatPrompt({
     userPrompt,
     projectTree,
