@@ -10,10 +10,13 @@ class ChatboxViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'chatboxView';
     private _view?: vscode.WebviewView;
     public _dbManager: DatabaseManager;
+    private _storageUri: vscode.Uri;
+    private _messages: Array<{ type: string; value: string; snippet?: string }> = [];
 
-    constructor(private readonly _extensionUri: vscode.Uri) {
+    constructor(private readonly _extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
         this._dbManager = new DatabaseManager();
         this._dbManager.init();
+        this._storageUri = context.globalStorageUri;  // Add this line
     }
 
     public async resolveWebviewView(
